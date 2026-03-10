@@ -85,6 +85,7 @@ interface Note {
   reminderDate?: string;
   recurrenceEnd?: string;
   completedAt?: string;
+  lastModifiedBy?: string;
 }
 
 // Relative time helper
