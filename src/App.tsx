@@ -22,6 +22,7 @@ interface Todo {
   dueDate?: string;
   reminder?: string;
   repeat?: 'daily' | 'weekly' | 'monthly';
+  duration?: number;
   tags: string[];
   color?: string;
   subtasks: { id: string; title: string; completed: boolean }[];
