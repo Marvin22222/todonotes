@@ -73,6 +73,7 @@ interface Note {
   recordingUrl?: string;
   checklist?: {id: string, text: string, done: boolean}[];
   section?: string;
+  bucket?: string;
 }
 
 // Relative time helper
