@@ -51,11 +51,11 @@ interface Note {
   waitingFor?: string;
   startDate?: string;
   endDate?: string;
-  status?: "todo"
+  status?: 'todo' | 'in_progress' | 'done';
   assignee?: string;
   estimatedCost?: number;
-  actualCost?: number; | "in_progress" | "done";
-  effort?: low | medium | high;
+  actualCost?: number;
+  effort?: 'low' | 'medium' | 'high';
   createdAt: string;
   updatedAt: string;
   pinned?: boolean;
