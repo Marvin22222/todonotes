@@ -34,6 +34,24 @@ interface Note {
   updatedAt: string;
 }
 
+// Relative time helper
+const getRelativeTime = (dateString: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHour = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHour / 24);
+
+  if (diffSec < 60) return 'just now';
+  if (diffMin < 60) return `${diffMin}m ago`;
+  if (diffHour < 24) return `${diffHour}h ago`;
+  if (diffDay === 1) return 'yesterday';
+  if (diffDay < 7) return `${diffDay}d ago`;
+  return date.toLocaleDateString('de');
+};
+
 // Storage Keys
 const TODOS_KEY = 'todonotes_todos';
 const NOTES_KEY = 'todonotes_notes';
@@ -396,14 +414,14 @@ export default function App() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className={`font-medium truncate ${(item as Todo).completed ? 'line-through text-muted-foreground' : ''}`}>{item.title}</p>
-                          <p className="text-xs text-muted-foreground">Task • {new Date(item.createdAt).toLocaleDateString('de')}</p>
+                          <p className="text-xs text-muted-foreground">Task • {getRelativeTime(item.createdAt)('de')}</p>
                         </div>
                       </div>
                     ) : (
                       <div key={item.id} onClick={() => { setSelectedItem(item as Note); setView('edit-note'); }} className="card p-4 cursor-pointer hover:border-primary/30">
                         <p className="font-medium truncate">{item.title || 'Untitled'}</p>
                         <p className="text-xs text-muted-foreground line-clamp-1">{item.content}</p>
-                        <p className="text-xs text-muted-foreground mt-1">Note • {new Date(item.createdAt).toLocaleDateString('de')}</p>
+                        <p className="text-xs text-muted-foreground mt-1">Note • {getRelativeTime(item.createdAt)('de')}</p>
                       </div>
                     ))
                   )}
@@ -464,7 +482,7 @@ export default function App() {
                     <div key={note.id} onClick={() => { setSelectedItem(note); setView('edit-note'); }} className="card p-4 cursor-pointer hover:border-primary/30">
                       <p className="font-medium truncate">{note.title || 'Untitled'}</p>
                       <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{note.content}</p>
-                      <p className="text-xs text-muted-foreground mt-2">{new Date(note.updatedAt).toLocaleDateString('de')}</p>
+                      <p className="text-xs text-muted-foreground mt-2">{getRelativeTime(note.updatedAt)('de')}</p>
                     </div>
                   ))}
                   {notes.length === 0 && <p className="text-center text-muted-foreground py-8">Keine Notes</p>}
