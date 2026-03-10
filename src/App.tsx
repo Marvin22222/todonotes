@@ -82,6 +82,7 @@ const THEME_KEY = 'todonotes_theme';
 function useTheme() {
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem(THEME_KEY);
+    if (saved === 'auto') return window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (saved) return saved === 'dark';
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
