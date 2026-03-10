@@ -93,7 +93,8 @@ function useTheme() {
 export default function App() {
   const { isDark, setIsDark } = useTheme();
   const [view, setView] = useState<'home' | 'new-todo' | 'new-note' | 'edit-todo' | 'edit-note'>('home');
-  const [tab, setTab] = useState<'recent' | 'tasks' | 'notes'>('recent');
+  const [tab, setTab] = useState<'recent' | 'tasks' | 'notes' | 'today'>('recent');
+  const [showTodayOnly, setShowTodayOnly] = useState(false);
   const [showCompleted, setShowCompleted] = useState(true);
   const [filterTag, setFilterTag] = useState<string | null>(null);
   const [todoOrder, setTodoOrder] = useState<string[]>([]);
@@ -488,7 +489,7 @@ export default function App() {
               {/* Tab Switcher - Premium Style */}
               {!focusMode && (
               <div className="flex gap-1 mb-4 p-1 bg-secondary/50 rounded-2xl">
-                {(['recent', 'tasks', 'notes'] as const).map((t) => (
+                {(['recent', 'tasks', 'notes', 'today'] as const).map((t) => (
                   <motion.button
                     key={t}
                     onClick={() => setTab(t)}
@@ -732,6 +733,44 @@ export default function App() {
                       <p className="text-muted-foreground font-medium">No notes yet</p>
                       <p className="text-xs text-muted-foreground mt-1">Tap + to capture your first note</p>
                     </div>
+                  )}
+                </div>
+              )}
+
+              {tab === 'today' && (
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold">Today's Focus</h2>
+                  {todos.filter(t => {
+                    if (t.completed) return false;
+                    const due = t.dueDate;
+                    if (!due) return t.priority === 'high';
+                    const today = new Date().toISOString().split('T')[0];
+                    return due === today;
+                  }).length === 0 ? (
+                    <div className="text-center py-12">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-green-500/10 flex items-center justify-center">
+                        <span className="text-4xl">🎉</span>
+                      </div>
+                      <p className="text-muted-foreground font-medium">All done for today!</p>
+                      <p className="text-xs text-muted-foreground mt-1">Enjoy your day! 🌟</p>
+                    </div>
+                  ) : (
+                    todos.filter(t => {
+                      if (t.completed) return false;
+                      const due = t.dueDate;
+                      if (!due) return t.priority === 'high';
+                      const today = new Date().toISOString().split('T')[0];
+                      return due === today;
+                    }).map(todo => (
+                      <div key={todo.id} onClick={() => { setSelectedItem(todo); setView('edit-todo'); }} className="card p-4 flex items-center gap-3 cursor-pointer hover:border-primary/30">
+                        <button onClick={(e) => { e.stopPropagation(); setTodos(todos.map(t => t.id === todo.id ? { ...t, completed: true } : t)); }} className={`w-5 h-5 rounded-full border-2 flex-shrink-0 ${todo.completed ? 'bg-primary border-primary' : 'border-muted-foreground'}`}>
+                        </button>
+                        <div>
+                          <p className="font-medium">{todo.title}</p>
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${todo.priority === 'high' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'}`}>{todo.priority}</span>
+                        </div>
+                      </div>
+                    ))
                   )}
                 </div>
               )}
