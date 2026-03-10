@@ -90,27 +90,43 @@ export default function App() {
     <div className="min-h-screen bg-background text-foreground">
       <Toaster position="top-center" />
       
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-border">
-        <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {view !== 'home' && (
-              <button onClick={() => setView('home')} className="p-2 -ml-2 hover:bg-background rounded-lg transition-colors">
-                <ChevronLeft className="w-5 h-5" />
+      {/* Premium Header - Craft Style */}
+      <header className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-border/50">
+        <div className="max-w-md mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            {/* Logo & Title */}
+            <div className="flex items-center gap-3">
+              {view !== 'home' && (
+                <button 
+                  onClick={() => setView('home')} 
+                  className="btn-icon -ml-2"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+              )}
+              <h1 className="text-lg font-semibold tracking-tight">
+                {view === 'home' ? 'TodoNotes' : view.includes('todo') ? 'Task' : 'Note'}
+              </h1>
+            </div>
+            
+            {/* Actions */}
+            <div className="flex items-center gap-0.5">
+              {view === 'home' && (
+                <button className="btn-icon">
+                  <Search className="w-5 h-5" />
+                </button>
+              )}
+              <button 
+                onClick={() => setIsDark(!isDark)} 
+                className="btn-icon"
+                title={isDark ? 'Light Mode' : 'Dark Mode'}
+              >
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
-            )}
-            <h1 className="text-xl font-bold">TodoNotes</h1>
-          </div>
-          <div className="flex items-center gap-1">
-            <button 
-              onClick={() => setIsDark(!isDark)} 
-              className="p-2 hover:bg-background rounded-lg transition-colors"
-            >
-              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            <button className="p-2 hover:bg-background rounded-lg transition-colors">
-              <Settings className="w-5 h-5" />
-            </button>
+              <button className="btn-icon">
+                <Settings className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -125,26 +141,36 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              {/* New Buttons */}
+              {/* Quick Actions - Craft Style */}
               <div className="grid grid-cols-2 gap-3 mb-6">
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => { setSelectedItem(null); setView('new-todo'); }}
-                  className="card p-5 flex flex-col items-center gap-2 hover:border-primary/30 transition-colors"
+                  className="card card-hover p-5 flex flex-col items-center gap-3"
                 >
-                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
-                    <CheckSquare className="w-6 h-6 text-primary" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center">
+                    <CheckSquare className="w-7 h-7 text-primary" />
                   </div>
-                  <span className="font-semibold">New Task</span>
-                </button>
-                <button
+                  <div className="text-center">
+                    <span className="font-semibold block">New Task</span>
+                    <span className="text-xs text-muted-foreground">Add a to-do</span>
+                  </div>
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => { setSelectedItem(null); setView('new-note'); }}
-                  className="card p-5 flex flex-col items-center gap-2 hover:border-primary/30 transition-colors"
+                  className="card card-hover p-5 flex flex-col items-center gap-3"
                 >
-                  <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
-                    <FileText className="w-6 h-6 text-primary" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center">
+                    <FileText className="w-7 h-7 text-primary" />
                   </div>
-                  <span className="font-semibold">New Note</span>
-                </button>
+                  <div className="text-center">
+                    <span className="font-semibold block">New Note</span>
+                    <span className="text-xs text-muted-foreground">Capture ideas</span>
+                  </div>
+                </motion.button>
               </div>
 
               {/* Tab Switcher */}
