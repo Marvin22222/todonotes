@@ -34,6 +34,7 @@ interface Note {
   createdAt: string;
   updatedAt: string;
   pinned?: boolean;
+  starred?: boolean;
 }
 
 // Relative time helper
