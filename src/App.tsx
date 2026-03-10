@@ -110,6 +110,21 @@ export default function App() {
   }, [todos]);
   const [sortBy, setSortBy] = useState<'date' | 'priority' | 'title'>('date');
   const [todos, setTodos] = useState<Todo[]>(() => JSON.parse(localStorage.getItem(TODOS_KEY) || '[]'));
+  
+  // Calculate streak
+  const getStreak = () => {
+    let streak = 0;
+    const today = new Date();
+    for (let i = 0; i < 30; i++) {
+      const day = new Date(today);
+      day.setDate(day.getDate() - i);
+      const dayStr = day.toISOString().split('T')[0];
+      const completedToday = todos.some(t => t.completed && t.createdAt.startsWith(dayStr));
+      if (completedToday) streak++;
+      else if (i > 0) break;
+    }
+    return streak;
+  };
   const [deletedItems, setDeletedItems] = useState<{type: 'todo' | 'note', item: Todo | Note, deletedAt: string}[]>(() => JSON.parse(localStorage.getItem('todonotes_trash') || '[]'));
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
   const [selectedItem, setSelectedItem] = useState<Todo | Note | null>(null);
@@ -495,7 +510,7 @@ export default function App() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="grid grid-cols-4 gap-2 mb-4">
                 <div className="card p-3 text-center">
                   <p className="text-2xl font-bold text-primary">{todos.length}</p>
                   <p className="text-xs text-muted-foreground">Tasks</p>
@@ -507,6 +522,10 @@ export default function App() {
                 <div className="card p-3 text-center">
                   <p className="text-2xl font-bold text-blue-500">{notes.length}</p>
                   <p className="text-xs text-muted-foreground">Notes</p>
+                </div>
+                <div className="card p-3 text-center">
+                  <p className="text-2xl font-bold text-orange-500">🔥 {getStreak()}</p>
+                  <p className="text-xs text-muted-foreground">Streak</p>
                 </div>
               </div>
 
