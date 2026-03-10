@@ -40,6 +40,7 @@ interface Note {
   content: string;
   tags: string[];
   notebook?: string;
+  notebookColor?: string;
   createdAt: string;
   updatedAt: string;
   pinned?: boolean;
