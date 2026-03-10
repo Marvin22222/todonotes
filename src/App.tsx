@@ -1144,6 +1144,9 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
         >
           📋 Copy
         </button>
+        <span className="text-xs text-muted-foreground">
+          {content.split(/\s+/).filter(Boolean).length} words
+        </span>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
