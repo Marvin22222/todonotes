@@ -89,6 +89,40 @@ export default function App() {
     setView('home');
   };
 
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd/Ctrl + N = New Note
+      if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+        e.preventDefault();
+        setSelectedItem(null);
+        setView('new-note');
+      }
+      // Cmd/Ctrl + T = New Task
+      if ((e.metaKey || e.ctrlKey) && e.key === 't') {
+        e.preventDefault();
+        setSelectedItem(null);
+        setView('new-todo');
+      }
+      // Cmd/Ctrl + / = Search
+      if ((e.metaKey || e.ctrlKey) && e.key === '/') {
+        e.preventDefault();
+        setShowSearch(true);
+      }
+      // Escape = Close search or go home
+      if (e.key === 'Escape') {
+        if (showSearch) {
+          setShowSearch(false);
+          setSearchQuery('');
+        } else if (view !== 'home') {
+          setView('home');
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [view, showSearch, searchQuery]);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Toaster position="top-center" />
