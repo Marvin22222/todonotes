@@ -184,6 +184,24 @@ export default function App() {
     }
   };
 
+  const shareNote = async (id: string) => {
+    const note = notes.find(n => n.id === id);
+    if (note && navigator.share) {
+      try {
+        await navigator.share({
+          title: note.title || 'Note',
+          text: `${note.title}\n\n${note.content}`,
+        });
+      } catch (err) {
+        // User cancelled or error
+      }
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(`${note?.title}\n\n${note?.content}`);
+      toast.success('Copied to clipboard!');
+    }
+  };
+
   const duplicateNote = (id: string) => {
     const note = notes.find(n => n.id === id);
     if (note) {
