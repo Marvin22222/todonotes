@@ -70,6 +70,7 @@ interface Note {
   followers?: string[];
   meetingLink?: string;
   address?: string;
+  recordingUrl?: string;
 }
 
 // Relative time helper
