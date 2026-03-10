@@ -90,6 +90,7 @@ interface Note {
   version?: number;
   locked?: boolean;
   archivedAt?: string;
+  trashedAt?: string;
 }
 
 // Relative time helper
