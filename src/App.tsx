@@ -688,7 +688,24 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
   const [showSlashMenu, setShowSlashMenu] = useState(false);
   const [slashMenuPosition, setSlashMenuPosition] = useState({ top: 0, left: 0 });
   const [selectedSlashIndex, setSelectedSlashIndex] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  // Auto-save every 30 seconds
+  useEffect(() => {
+    if (!title && !content) return;
+    
+    const autoSaveTimer = setTimeout(() => {
+      setIsSaving(true);
+      // Auto-save to localStorage
+      localStorage.setItem('todonotes_autosave', JSON.stringify({ title, content, tags, savedAt: new Date().toISOString() }));
+      setLastSaved(new Date());
+      setTimeout(() => setIsSaving(false), 500);
+    }, 30000);
+    
+    return () => clearTimeout(autoSaveTimer);
+  }, [title, content, tags]);
 
   // Handle image paste
   useEffect(() => {
@@ -790,6 +807,16 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+      {/* Auto-save indicator */}
+      <div className="flex items-center justify-between mb-2">
+        {isSaving ? (
+          <span className="text-xs text-muted-foreground flex items-center gap-1">
+            <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1 }}>●</motion.span> Saving...
+          </span>
+        ) : lastSaved ? (
+          <span className="text-xs text-muted-foreground">✓ Saved</span>
+        ) : <span />}
+      </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
