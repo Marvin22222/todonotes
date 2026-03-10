@@ -130,6 +130,25 @@ export default function App() {
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
   const [selectedItem, setSelectedItem] = useState<Todo | Note | null>(null);
   const [focusMode, setFocusMode] = useState(false);
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [timerActive, setTimerActive] = useState(false);
+
+  // Timer effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timerActive && timerSeconds > 0) {
+      interval = setInterval(() => setTimerSeconds(s => s - 1), 1000);
+    } else if (timerSeconds === 0 && timerActive) {
+      setTimerActive(false);
+      toast.success('Timer complete! 🎉');
+    }
+    return () => clearInterval(interval);
+  }, [timerActive, timerSeconds]);
+
+  const startTimer = (mins: number) => {
+    setTimerSeconds(mins * 60);
+    setTimerActive(true);
+  };
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
@@ -528,6 +547,28 @@ export default function App() {
                   <p className="text-2xl font-bold text-orange-500">🔥 {getStreak()}</p>
                   <p className="text-xs text-muted-foreground">Streak</p>
                 </div>
+              </div>
+
+              {/* Timer */}
+              <div className="mb-4 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-2xl border border-green-500/20">
+                {timerActive || timerSeconds > 0 ? (
+                  <div className="text-center">
+                    <p className="text-3xl font-bold font-mono">{Math.floor(timerSeconds / 60)}:{(timerSeconds % 60).toString().padStart(2, '0')}</p>
+                    <div className="flex gap-2 justify-center mt-2">
+                      <button onClick={() => setTimerActive(!timerActive)} className="btn-secondary text-xs px-3 py-1">{timerActive ? '⏸️ Pause' : '▶️ Resume'}</button>
+                      <button onClick={() => { setTimerActive(false); setTimerSeconds(0); }} className="btn-secondary text-xs px-3 py-1">⏹️ Stop</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <p className="text-sm font-medium mb-2">⏱️ Focus Timer</p>
+                    <div className="flex gap-2 justify-center">
+                      <button onClick={() => startTimer(5)} className="btn-secondary text-xs px-3 py-1">5m</button>
+                      <button onClick={() => startTimer(15)} className="btn-secondary text-xs px-3 py-1">15m</button>
+                      <button onClick={() => startTimer(25)} className="btn-secondary text-xs px-3 py-1">25m</button>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Tab Switcher - Premium Style */}
