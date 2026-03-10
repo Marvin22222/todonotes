@@ -31,6 +31,7 @@ interface Todo {
   createdAt: string;
   pinned?: boolean;
   isHabit?: boolean;
+  emoji?: string;
 }
 
 interface Note {
@@ -43,6 +44,7 @@ interface Note {
   updatedAt: string;
   pinned?: boolean;
   isHabit?: boolean;
+  emoji?: string;
   starred?: boolean;
   links?: string[];
   url?: string;
