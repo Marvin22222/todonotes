@@ -30,6 +30,7 @@ interface Todo {
   subtasks: { id: string; title: string; completed: boolean }[];
   createdAt: string;
   pinned?: boolean;
+  isHabit?: boolean;
 }
 
 interface Note {
@@ -41,6 +42,7 @@ interface Note {
   createdAt: string;
   updatedAt: string;
   pinned?: boolean;
+  isHabit?: boolean;
   starred?: boolean;
   links?: string[];
   url?: string;
