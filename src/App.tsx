@@ -49,6 +49,7 @@ interface Note {
   context?: string;
   project?: string;
   waitingFor?: string;
+  startDate?: string;
   effort?: low | medium | high;
   createdAt: string;
   updatedAt: string;
