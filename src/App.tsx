@@ -66,6 +66,42 @@ export default function App() {
   const [focusMode, setFocusMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+
+  // Export functions
+  const exportData = (format: 'json' | 'markdown') => {
+    const data = { todos, notes, exportedAt: new Date().toISOString() };
+    
+    if (format === 'json') {
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `todonotes-export-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success('Exported as JSON');
+    } else {
+      let md = '# TodoNotes Export\n\n';
+      md += '## Tasks\n\n';
+      todos.forEach(t => {
+        md += `- [${t.completed ? 'x' : ' '}] ${t.title} (${t.priority})\n`;
+      });
+      md += '\n## Notes\n\n';
+      notes.forEach(n => {
+        md += `### ${n.title || 'Untitled'}\n\n${n.content}\n\n`;
+      });
+      const blob = new Blob([md], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `todonotes-export-${new Date().toISOString().split('T')[0]}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success('Exported as Markdown');
+    }
+    setShowExportMenu(false);
+  };
 
   // Save to localStorage
   useEffect(() => {
@@ -170,6 +206,31 @@ export default function App() {
               >
                 {focusMode ? <Sun className="w-5 h-5" /> : <Sparkles className="w-5 h-5" />}
               </button>
+              <div className="relative">
+                <button 
+                  onClick={() => setShowExportMenu(!showExportMenu)}
+                  className="btn-icon"
+                  title="Export"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                </button>
+                {showExportMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="absolute right-0 mt-2 w-40 bg-surface border border-border rounded-xl shadow-lg overflow-hidden z-50"
+                  >
+                    <button onClick={() => exportData('json')} className="w-full px-4 py-2 text-left text-sm hover:bg-secondary/50">
+                      📄 Export as JSON
+                    </button>
+                    <button onClick={() => exportData('markdown')} className="w-full px-4 py-2 text-left text-sm hover:bg-secondary/50">
+                      📝 Export as Markdown
+                    </button>
+                  </motion.div>
+                )}
+              </div>
               <button className="btn-icon">
                 <Settings className="w-5 h-5" />
               </button>
