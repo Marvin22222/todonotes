@@ -31,6 +31,7 @@ interface Todo {
   createdAt: string;
   pinned?: boolean;
   parentId?: string;
+  dependsOn?: string[];
   isHabit?: boolean;
   emoji?: string;
 }
@@ -46,6 +47,7 @@ interface Note {
   updatedAt: string;
   pinned?: boolean;
   parentId?: string;
+  dependsOn?: string[];
   isHabit?: boolean;
   emoji?: string;
   starred?: boolean;
