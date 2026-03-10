@@ -24,6 +24,7 @@ interface Todo {
   repeat?: 'daily' | 'weekly' | 'monthly';
   duration?: number;
   locationName?: string;
+  attendees?: string[];
   cost?: number;
   location?: string;
   tags: string[];
@@ -98,6 +99,7 @@ interface Note {
   likeCount?: number;
   duration?: number;
   locationName?: string;
+  attendees?: string[];
 }
 
 // Relative time helper
