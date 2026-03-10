@@ -535,6 +535,7 @@ export default function App() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary/80 text-white rounded-2xl shadow-lg shadow-primary/25 flex items-center justify-center"
+          aria-label="Add new item"
           onClick={() => {
             // Toggle between task and note based on last tab
             if (tab === 'tasks') {
