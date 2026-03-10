@@ -91,6 +91,7 @@ interface Note {
   locked?: boolean;
   archivedAt?: string;
   trashedAt?: string;
+  commentCount?: number;
 }
 
 // Relative time helper
