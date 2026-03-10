@@ -20,6 +20,7 @@ interface Todo {
   completed: boolean;
   priority: 'high' | 'medium' | 'low';
   dueDate?: string;
+  reminder?: string;
   tags: string[];
   subtasks: { id: string; title: string; completed: boolean }[];
   createdAt: string;
