@@ -1012,6 +1012,12 @@ function TodoEditor({ todo, onSave, onDelete }: { todo: Todo | null; onSave: (to
             className="input text-xl font-semibold"
             autoFocus
           />
+          {/* Quick templates */}
+          <div className="flex gap-2 flex-wrap">
+            {['📋 Meeting', '💻 Code', '📞 Call', '📧 Email', '🛒 Shopping'].map(t => (
+              <button key={t} onClick={() => setTitle(t)} className="text-xs bg-secondary px-2 py-1 rounded-full">{t}</button>
+            ))}
+          </div>
         </div>
 
         <div className="flex gap-2">
