@@ -184,6 +184,11 @@ export default function App() {
         e.preventDefault();
         setShowSearch(true);
       }
+      // Cmd/Ctrl + D = Toggle Dark Mode
+      if ((e.metaKey || e.ctrlKey) && e.key === 'd') {
+        e.preventDefault();
+        setIsDark(!isDark);
+      }
       // Escape = Close search or go home
       if (e.key === 'Escape') {
         if (showSearch) {
