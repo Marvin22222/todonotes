@@ -35,6 +35,7 @@ interface Note {
   title: string;
   content: string;
   tags: string[];
+  notebook?: string;
   createdAt: string;
   updatedAt: string;
   pinned?: boolean;
