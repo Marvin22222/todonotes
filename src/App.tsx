@@ -23,6 +23,7 @@ interface Todo {
   tags: string[];
   subtasks: { id: string; title: string; completed: boolean }[];
   createdAt: string;
+  pinned?: boolean;
 }
 
 interface Note {
@@ -32,6 +33,7 @@ interface Note {
   tags: string[];
   createdAt: string;
   updatedAt: string;
+  pinned?: boolean;
 }
 
 // Relative time helper
@@ -80,6 +82,14 @@ export default function App() {
   const [tab, setTab] = useState<'recent' | 'tasks' | 'notes'>('recent');
   const [showCompleted, setShowCompleted] = useState(true);
   const [filterTag, setFilterTag] = useState<string | null>(null);
+  const [todoOrder, setTodoOrder] = useState<string[]>([]);
+
+  // Initialize todo order
+  useEffect(() => {
+    if (todoOrder.length === 0 && todos.length > 0) {
+      setTodoOrder(todos.map(t => t.id));
+    }
+  }, [todos]);
   const [sortBy, setSortBy] = useState<'date' | 'priority' | 'title'>('date');
   const [todos, setTodos] = useState<Todo[]>(() => JSON.parse(localStorage.getItem(TODOS_KEY) || '[]'));
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
@@ -540,6 +550,9 @@ export default function App() {
                     .filter(todo => showCompleted || !todo.completed)
                     .filter(todo => !filterTag || todo.tags.includes(filterTag))
                     .sort((a, b) => {
+                      // Pinned always first
+                      if (a.pinned && !b.pinned) return -1;
+                      if (!a.pinned && b.pinned) return 1;
                       if (sortBy === 'priority') {
                         const priorityOrder = { high: 0, medium: 1, low: 2 };
                         return priorityOrder[a.priority] - priorityOrder[b.priority];
@@ -571,8 +584,16 @@ export default function App() {
                         {todo.completed && <CheckSquare className="w-3 h-3 text-white" />}
                       </button>
                       <div className="flex-1 min-w-0">
-                        <p className={`font-medium truncate ${todo.completed ? 'line-through text-muted-foreground' : ''}`}>{todo.title}</p>
-                        <div className="flex items-center gap-2 mt-1">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setTodos(todos.map(t => t.id === todo.id ? { ...t, pinned: !t.pinned } : t))}
+                            className={`text-lg ${todo.pinned ? 'text-primary' : 'text-muted-foreground/30'}`}
+                          >
+                            {todo.pinned ? '📌' : '📍'}
+                          </button>
+                          <p className={`font-medium truncate ${todo.completed ? 'line-through text-muted-foreground' : ''}`}>{todo.title}</p>
+                        </div>
+                        <div className="flex items-center gap-2 mt-1 ml-6">
                           <span className={`text-xs px-2 py-0.5 rounded-full ${
                             todo.priority === 'high' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
                             todo.priority === 'medium' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
