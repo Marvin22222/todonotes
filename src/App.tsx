@@ -63,6 +63,7 @@ export default function App() {
   const [todos, setTodos] = useState<Todo[]>(() => JSON.parse(localStorage.getItem(TODOS_KEY) || '[]'));
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
   const [selectedItem, setSelectedItem] = useState<Todo | Note | null>(null);
+  const [focusMode, setFocusMode] = useState(false);
 
   // Save to localStorage
   useEffect(() => {
@@ -123,6 +124,13 @@ export default function App() {
               >
                 {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
+              <button 
+                onClick={() => setFocusMode(!focusMode)} 
+                className="btn-icon"
+                title={focusMode ? 'Exit Focus Mode' : 'Focus Mode'}
+              >
+                {focusMode ? <Sun className="w-5 h-5" /> : <Sparkles className="w-5 h-5" />}
+              </button>
               <button className="btn-icon">
                 <Settings className="w-5 h-5" />
               </button>
@@ -174,6 +182,7 @@ export default function App() {
               </div>
 
               {/* Tab Switcher - Premium Style */}
+              {!focusMode && (
               <div className="flex gap-1 mb-4 p-1 bg-secondary/50 rounded-2xl">
                 {(['recent', 'tasks', 'notes'] as const).map((t) => (
                   <motion.button
@@ -190,6 +199,7 @@ export default function App() {
                   </motion.button>
                 ))}
               </div>
+              )}
 
               {/* Lists */}
               {tab === 'recent' && (
