@@ -649,6 +649,12 @@ export default function App() {
                 </div>
               )}
 
+              {/* Daily Goals */}
+              <div className="mb-4 p-4 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl border border-amber-500/20">
+                <p className="text-sm font-medium mb-2">🎯 Daily Goals</p>
+                <p className="text-xs text-muted-foreground">Complete 3 tasks to reach your daily goal!</p>
+              </div>
+
               {/* Timer */}
               <div className="mb-4 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-2xl border border-green-500/20">
                 {timerActive || timerSeconds > 0 ? (
