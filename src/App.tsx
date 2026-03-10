@@ -158,7 +158,7 @@ export default function App() {
   const [lastTapTime, setLastTapTime] = useState(0);
 
   // Export functions
-  const exportData = (format: 'json' | 'markdown') => {
+  const exportData = (format: 'json' | 'markdown' | 'csv') => {
     const data = { todos, notes, exportedAt: new Date().toISOString() };
     
     if (format === 'json') {
@@ -170,6 +170,22 @@ export default function App() {
       a.click();
       URL.revokeObjectURL(url);
       toast.success('Exported as JSON');
+    } else if (format === 'csv') {
+      let csv = 'Type,Title,Completed,Priority,DueDate,Created\n';
+      todos.forEach(t => {
+        csv += `Task,${t.title},${t.completed},${t.priority},${t.dueDate || ''},${t.createdAt}\n`;
+      });
+      notes.forEach(n => {
+        csv += `Note,"${n.title || 'Untitled'}",,,,${n.createdAt}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `todonotes-export-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success('Exported as CSV');
     } else {
       let md = '# TodoNotes Export\n\n';
       md += '## Tasks\n\n';
@@ -404,6 +420,9 @@ export default function App() {
                     </button>
                     <button onClick={() => toast.success('PDF coming soon!')} className="w-full px-4 py-2 text-left text-sm hover:bg-secondary/50">
                       📄 Export as PDF
+                    </button>
+                    <button onClick={() => exportData('csv')} className="w-full px-4 py-2 text-left text-sm hover:bg-secondary/50">
+                      📊 Export as CSV
                     </button>
                   </motion.div>
                 )}
