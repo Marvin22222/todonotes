@@ -193,6 +193,11 @@ export default function App() {
     }
   };
 
+  const archiveTodo = (id: string) => {
+    setTodos(todos.map(t => t.id === id ? { ...t, completed: true, archived: true } : t));
+    toast.success('Task archived');
+  };
+
   const shareNote = async (id: string) => {
     const note = notes.find(n => n.id === id);
     if (note && navigator.share) {
