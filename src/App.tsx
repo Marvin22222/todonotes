@@ -79,6 +79,7 @@ export default function App() {
   const [view, setView] = useState<'home' | 'new-todo' | 'new-note' | 'edit-todo' | 'edit-note'>('home');
   const [tab, setTab] = useState<'recent' | 'tasks' | 'notes'>('recent');
   const [showCompleted, setShowCompleted] = useState(true);
+  const [filterTag, setFilterTag] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'date' | 'priority' | 'title'>('date');
   const [todos, setTodos] = useState<Todo[]>(() => JSON.parse(localStorage.getItem(TODOS_KEY) || '[]'));
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
@@ -457,6 +458,31 @@ export default function App() {
 
               {tab === 'tasks' && (
                 <div>
+                  {/* Tag filter */}
+                  {todos.flatMap(t => t.tags).filter((v, i, a) => a.indexOf(v) === i).length > 0 && (
+                    <div className="flex gap-1 mb-3 overflow-x-auto pb-2">
+                      <button
+                        onClick={() => setFilterTag(null)}
+                        className={`px-3 py-1 rounded-full text-xs whitespace-nowrap transition-colors ${
+                          !filterTag ? 'bg-primary text-white' : 'bg-secondary text-muted-foreground'
+                        }`}
+                      >
+                        All
+                      </button>
+                      {todos.flatMap(t => t.tags).filter((v, i, a) => a.indexOf(v) === i).map(tag => (
+                        <button
+                          key={tag}
+                          onClick={() => setFilterTag(filterTag === tag ? null : tag)}
+                          className={`px-3 py-1 rounded-full text-xs whitespace-nowrap transition-colors ${
+                            filterTag === tag ? 'bg-primary text-white' : 'bg-secondary text-muted-foreground'
+                          }`}
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  
                   {/* Show/hide completed toggle */}
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm text-muted-foreground">
@@ -488,6 +514,7 @@ export default function App() {
                   <div className="space-y-2">
                   {todos
                     .filter(todo => showCompleted || !todo.completed)
+                    .filter(todo => !filterTag || todo.tags.includes(filterTag))
                     .sort((a, b) => {
                       if (sortBy === 'priority') {
                         const priorityOrder = { high: 0, medium: 1, low: 2 };
