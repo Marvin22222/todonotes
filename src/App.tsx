@@ -123,6 +123,16 @@ export default function App() {
   const [todos, setTodos] = useState<Todo[]>(() => JSON.parse(localStorage.getItem(TODOS_KEY) || '[]'));
   
   // Calculate streak
+
+  const getStorageUsage = () => {
+    let total = 0;
+    for (let key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        total += localStorage[key].length * 2;
+      }
+    }
+    return (total / 1024).toFixed(1);
+  };
   const getStreak = () => {
     let streak = 0;
     const today = new Date();
