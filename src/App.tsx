@@ -86,6 +86,7 @@ interface Note {
   recurrenceEnd?: string;
   completedAt?: string;
   lastModifiedBy?: string;
+  createdBy?: string;
 }
 
 // Relative time helper
