@@ -81,6 +81,7 @@ interface Note {
   excerpt?: string;
   source?: string;
   language?: string;
+  timezone?: string;
 }
 
 // Relative time helper
