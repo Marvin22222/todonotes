@@ -46,6 +46,7 @@ interface Note {
   dueTime?: string;
   category?: string;
   recurringRule?: string;
+  context?: string;
   effort?: low | medium | high;
   createdAt: string;
   updatedAt: string;
