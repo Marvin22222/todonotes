@@ -139,6 +139,7 @@ export default function App() {
   const [focusMode, setFocusMode] = useState(false);
   const [ultraFocusTask, setUltraFocusTask] = useState<string | null>(null);
   const [timerSeconds, setTimerSeconds] = useState(0);
+  const [pomodoroSessions, setPomodoroSessions] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
 
   // Timer effect
@@ -148,7 +149,7 @@ export default function App() {
       interval = setInterval(() => setTimerSeconds(s => s - 1), 1000);
     } else if (timerSeconds === 0 && timerActive) {
       setTimerActive(false);
-      toast.success('Timer complete! 🎉');
+      toast.success('Timer complete! 🎉'); setPomodoroSessions(s => s + 1);
     }
     return () => clearInterval(interval);
   }, [timerActive, timerSeconds]);
