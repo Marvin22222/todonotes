@@ -51,6 +51,7 @@ interface Note {
   waitingFor?: string;
   startDate?: string;
   endDate?: string;
+  status?: "todo" | "in_progress" | "done";
   effort?: low | medium | high;
   createdAt: string;
   updatedAt: string;
