@@ -50,6 +50,7 @@ interface Note {
   project?: string;
   waitingFor?: string;
   startDate?: string;
+  endDate?: string;
   effort?: low | medium | high;
   createdAt: string;
   updatedAt: string;
