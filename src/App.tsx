@@ -88,6 +88,7 @@ interface Note {
   lastModifiedBy?: string;
   createdBy?: string;
   version?: number;
+  locked?: boolean;
 }
 
 // Relative time helper
