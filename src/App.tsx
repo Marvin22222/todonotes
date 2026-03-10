@@ -246,6 +246,11 @@ export default function App() {
     toast.success(`${completed.length} completed tasks deleted`);
   };
 
+  const archiveAllCompleted = () => {
+    setTodos(todos.map(t => t.completed ? { ...t, archived: true } : t));
+    toast.success('All completed tasks archived');
+  };
+
   // Duplicate functions
   const duplicateTodo = (id: string) => {
     const todo = todos.find(t => t.id === id);
