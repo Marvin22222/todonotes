@@ -94,6 +94,7 @@ interface Note {
   commentCount?: number;
   shareCount?: number;
   viewCount?: number;
+  likeCount?: number;
 }
 
 // Relative time helper
