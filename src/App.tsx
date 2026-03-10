@@ -137,6 +137,7 @@ export default function App() {
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
   const [selectedItem, setSelectedItem] = useState<Todo | Note | null>(null);
   const [focusMode, setFocusMode] = useState(false);
+  const [ultraFocusTask, setUltraFocusTask] = useState<string | null>(null);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
 
