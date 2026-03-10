@@ -53,7 +53,8 @@ interface Note {
   endDate?: string;
   status?: "todo"
   assignee?: string;
-  estimatedCost?: number; | "in_progress" | "done";
+  estimatedCost?: number;
+  actualCost?: number; | "in_progress" | "done";
   effort?: low | medium | high;
   createdAt: string;
   updatedAt: string;
