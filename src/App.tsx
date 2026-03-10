@@ -42,6 +42,7 @@ interface Note {
   pinned?: boolean;
   starred?: boolean;
   links?: string[];
+  url?: string;
 }
 
 // Relative time helper
