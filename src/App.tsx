@@ -64,6 +64,8 @@ export default function App() {
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
   const [selectedItem, setSelectedItem] = useState<Todo | Note | null>(null);
   const [focusMode, setFocusMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
 
   // Save to localStorage
   useEffect(() => {
@@ -113,7 +115,10 @@ export default function App() {
             {/* Actions */}
             <div className="flex items-center gap-0.5">
               {view === 'home' && (
-                <button className="btn-icon">
+                <button 
+                  onClick={() => setShowSearch(true)} 
+                  className="btn-icon"
+                >
                   <Search className="w-5 h-5" />
                 </button>
               )}
@@ -138,6 +143,88 @@ export default function App() {
           </div>
         </div>
       </header>
+
+      {/* Search Modal */}
+      <AnimatePresence>
+        {showSearch && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl"
+          >
+            <div className="max-w-md mx-auto pt-16 px-4">
+              {/* Search Input */}
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search notes and tasks..."
+                  className="input pl-12 pr-4 py-4 text-lg"
+                  autoFocus
+                />
+                <button
+                  onClick={() => { setShowSearch(false); setSearchQuery(''); }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Search Results */}
+              <div className="mt-6 space-y-2">
+                {searchQuery && (
+                  <>
+                    {/* Tasks */}
+                    {todos.filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase())).map(todo => (
+                      <motion.div
+                        key={todo.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        onClick={() => { setSelectedItem(todo); setView('edit-todo'); setShowSearch(false); setSearchQuery(''); }}
+                        className="card p-4 flex items-center gap-3 cursor-pointer"
+                      >
+                        <CheckSquare className="w-5 h-5 text-primary" />
+                        <div>
+                          <p className="font-medium">{todo.title}</p>
+                          <p className="text-xs text-muted-foreground">Task • {todo.priority}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                    {/* Notes */}
+                    {notes.filter(n => n.title.toLowerCase().includes(searchQuery.toLowerCase()) || n.content.toLowerCase().includes(searchQuery.toLowerCase())).map(note => (
+                      <motion.div
+                        key={note.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        onClick={() => { setSelectedItem(note); setView('edit-note'); setShowSearch(false); setSearchQuery(''); }}
+                        className="card p-4 flex items-center gap-3 cursor-pointer"
+                      >
+                        <FileText className="w-5 h-5 text-primary" />
+                        <div>
+                          <p className="font-medium">{note.title || 'Untitled'}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-1">{note.content.slice(0, 50)}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                    {todos.filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && 
+                     notes.filter(n => n.title.toLowerCase().includes(searchQuery.toLowerCase()) || n.content.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
+                      <p className="text-center text-muted-foreground py-8">No results found</p>
+                    )}
+                  </>
+                )}
+                {!searchQuery && (
+                  <div className="text-center text-muted-foreground py-8">
+                    <p>Start typing to search</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
       <main className="max-w-md mx-auto px-4 py-4 pb-24">
