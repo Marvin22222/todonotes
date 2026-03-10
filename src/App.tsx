@@ -688,6 +688,8 @@ export default function App() {
                             duplicateNote(note.id);
                           } else if (offset.x < -100) {
                             deleteNote(note.id);
+                          } else if (offset.x > 30 && offset.x < 100) {
+                            shareNote(note.id);
                           }
                         }}
                         className="card p-4 cursor-pointer hover:border-primary/30"
