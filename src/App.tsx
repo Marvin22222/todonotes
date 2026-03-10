@@ -67,6 +67,7 @@ interface Note {
   links?: string[];
   url?: string;
   collaborators?: string[];
+  followers?: string[];
 }
 
 // Relative time helper
