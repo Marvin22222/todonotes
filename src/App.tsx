@@ -157,6 +157,7 @@ export default function App() {
   };
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [lastTapTime, setLastTapTime] = useState(0);
 
@@ -337,6 +338,8 @@ export default function App() {
       if ((e.metaKey || e.ctrlKey) && e.key === '1') { e.preventDefault(); setTab('recent'); }
       if ((e.metaKey || e.ctrlKey) && e.key === '2') { e.preventDefault(); setTab('tasks'); }
       if ((e.metaKey || e.ctrlKey) && e.key === '3') { e.preventDefault(); setTab('notes'); }
+      // ? = Show shortcuts
+      if (e.key === '?' || (e.metaKey && e.key === '/')) { e.preventDefault(); setShowShortcuts(true); }
       // Cmd+Shift+N = Quick Note
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'N') {
         e.preventDefault();
@@ -521,6 +524,38 @@ export default function App() {
                 )}
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Keyboard Shortcuts Help Modal */}
+      <AnimatePresence>
+        {showShortcuts && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-xl flex items-center justify-center"
+            onClick={() => setShowShortcuts(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              className="card p-6 max-w-sm w-full mx-4"
+              onClick={e => e.stopPropagation()}
+            >
+              <h2 className="text-lg font-bold mb-4">⌨️ Keyboard Shortcuts</h2>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between"><span>New Note</span><kbd className="bg-secondary px-2 py-1 rounded">⌘ N</kbd></div>
+                <div className="flex justify-between"><span>New Task</span><kbd className="bg-secondary px-2 py-1 rounded">⌘ T</kbd></div>
+                <div className="flex justify-between"><span>Search</span><kbd className="bg-secondary px-2 py-1 rounded">⌘ /</kbd></div>
+                <div className="flex justify-between"><span>Dark Mode</span><kbd className="bg-secondary px-2 py-1 rounded">⌘ D</kbd></div>
+                <div className="flex justify-between"><span>Recent</span><kbd className="bg-secondary px-2 py-1 rounded">⌘ 1</kbd></div>
+                <div className="flex justify-between"><span>Tasks</span><kbd className="bg-secondary px-2 py-1 rounded">⌘ 2</kbd></div>
+                <div className="flex justify-between"><span>Notes</span><kbd className="bg-secondary px-2 py-1 rounded">⌘ 3</kbd></div>
+              </div>
+              <button onClick={() => setShowShortcuts(false)} className="btn-primary w-full mt-4">Close</button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
