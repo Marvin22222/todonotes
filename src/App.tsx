@@ -87,6 +87,7 @@ interface Note {
   completedAt?: string;
   lastModifiedBy?: string;
   createdBy?: string;
+  version?: number;
 }
 
 // Relative time helper
