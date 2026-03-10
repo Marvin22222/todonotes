@@ -258,6 +258,12 @@ export default function App() {
         e.preventDefault();
         setIsDark(!isDark);
       }
+      // Cmd+Shift+N = Quick Note
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'N') {
+        e.preventDefault();
+        setSelectedItem(null);
+        setView('new-note');
+      }
       // Escape = Close search or go home
       if (e.key === 'Escape') {
         if (showSearch) {
