@@ -112,6 +112,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [lastTapTime, setLastTapTime] = useState(0);
 
   // Export functions
   const exportData = (format: 'json' | 'markdown') => {
@@ -747,6 +748,12 @@ export default function App() {
           className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary/80 text-white rounded-2xl shadow-lg shadow-primary/25 flex items-center justify-center"
           aria-label="Add new item"
           onClick={() => {
+            const now = Date.now();
+            if (now - lastTapTime < 400) {
+              // Double tap - quick add modal could go here
+              toast.success('Tap + to add new item');
+            }
+            setLastTapTime(now);
             // Toggle between task and note based on last tab
             if (tab === 'tasks') {
               setSelectedItem(null);
