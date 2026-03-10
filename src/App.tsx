@@ -637,6 +637,9 @@ export default function App() {
                   </div>
                   {notes
                     .sort((a, b) => {
+                      // Pinned always first
+                      if (a.pinned && !b.pinned) return -1;
+                      if (!a.pinned && b.pinned) return 1;
                       if (sortBy === 'title') {
                         return (a.title || '').localeCompare(b.title || '');
                       }
@@ -657,9 +660,17 @@ export default function App() {
                         className="card p-4 cursor-pointer hover:border-primary/30"
                         onClick={() => { setSelectedItem(note); setView('edit-note'); }}
                       >
-                        <p className="font-medium truncate">{note.title || 'Untitled'}</p>
-                        <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{note.content}</p>
-                        <p className="text-xs text-muted-foreground mt-2">{getRelativeTime(note.updatedAt)}</p>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setNotes(notes.map(n => n.id === note.id ? { ...n, pinned: !n.pinned } : n)); }}
+                            className={`text-lg ${note.pinned ? 'text-primary' : 'text-muted-foreground/30'}`}
+                          >
+                            {note.pinned ? '📌' : '📍'}
+                          </button>
+                          <p className="font-medium truncate">{note.title || 'Untitled'}</p>
+                        </div>
+                        <p className="text-sm text-muted-foreground line-clamp-2 mt-1 ml-6">{note.content}</p>
+                        <p className="text-xs text-muted-foreground mt-2 ml-6">{getRelativeTime(note.updatedAt)}</p>
                       </motion.div>
                     ))}
                   {notes.length === 0 && (
