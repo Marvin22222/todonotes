@@ -23,6 +23,7 @@ interface Todo {
   reminder?: string;
   repeat?: 'daily' | 'weekly' | 'monthly';
   duration?: number;
+  locationName?: string;
   cost?: number;
   location?: string;
   tags: string[];
@@ -96,6 +97,7 @@ interface Note {
   viewCount?: number;
   likeCount?: number;
   duration?: number;
+  locationName?: string;
 }
 
 // Relative time helper
