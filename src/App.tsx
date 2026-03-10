@@ -107,6 +107,7 @@ export default function App() {
   }, [todos]);
   const [sortBy, setSortBy] = useState<'date' | 'priority' | 'title'>('date');
   const [todos, setTodos] = useState<Todo[]>(() => JSON.parse(localStorage.getItem(TODOS_KEY) || '[]'));
+  const [deletedItems, setDeletedItems] = useState<{type: 'todo' | 'note', item: Todo | Note, deletedAt: string}[]>(() => JSON.parse(localStorage.getItem('todonotes_trash') || '[]'));
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
   const [selectedItem, setSelectedItem] = useState<Todo | Note | null>(null);
   const [focusMode, setFocusMode] = useState(false);
@@ -158,6 +159,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
   }, [notes]);
+
+  useEffect(() => {
+    localStorage.setItem('todonotes_trash', JSON.stringify(deletedItems));
+  }, [deletedItems]);
 
   // Delete functions
   const deleteTodo = (id: string) => {
