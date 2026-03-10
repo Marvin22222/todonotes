@@ -469,6 +469,22 @@ export default function App() {
                 </motion.button>
               </div>
 
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                <div className="card p-3 text-center">
+                  <p className="text-2xl font-bold text-primary">{todos.length}</p>
+                  <p className="text-xs text-muted-foreground">Tasks</p>
+                </div>
+                <div className="card p-3 text-center">
+                  <p className="text-2xl font-bold text-green-500">{todos.filter(t => t.completed).length}</p>
+                  <p className="text-xs text-muted-foreground">Done</p>
+                </div>
+                <div className="card p-3 text-center">
+                  <p className="text-2xl font-bold text-blue-500">{notes.length}</p>
+                  <p className="text-xs text-muted-foreground">Notes</p>
+                </div>
+              </div>
+
               {/* Tab Switcher - Premium Style */}
               {!focusMode && (
               <div className="flex gap-1 mb-4 p-1 bg-secondary/50 rounded-2xl">
