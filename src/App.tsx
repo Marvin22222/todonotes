@@ -47,6 +47,7 @@ interface Note {
   category?: string;
   recurringRule?: string;
   context?: string;
+  project?: string;
   effort?: low | medium | high;
   createdAt: string;
   updatedAt: string;
