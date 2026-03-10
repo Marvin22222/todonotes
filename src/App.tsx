@@ -401,7 +401,9 @@ export default function App() {
                     </button>
                     <button onClick={() => exportData('markdown')} className="w-full px-4 py-2 text-left text-sm hover:bg-secondary/50">
                       📝 Export as Markdown
-                    <button onClick={() => toast.success('PDF export coming soon!')}
+                    </button>
+                    <button onClick={() => toast.success('PDF coming soon!')} className="w-full px-4 py-2 text-left text-sm hover:bg-secondary/50">
+                      📄 Export as PDF
                     </button>
                   </motion.div>
                 )}
