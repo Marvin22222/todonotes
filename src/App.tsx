@@ -92,6 +92,7 @@ interface Note {
   archivedAt?: string;
   trashedAt?: string;
   commentCount?: number;
+  shareCount?: number;
 }
 
 // Relative time helper
