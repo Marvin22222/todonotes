@@ -636,6 +636,10 @@ export default function App() {
                   <p className="text-2xl font-bold text-orange-500">🔥 {getStreak()}</p>
                   <p className="text-xs text-muted-foreground">Streak</p>
                 </div>
+                <div className="card p-3 text-center">
+                  <p className="text-2xl font-bold text-yellow-500">🏆 {getStreak() > 0 ? Math.floor(getStreak() / 7) : 0}</p>
+                  <p className="text-xs text-muted-foreground">Badges</p>
+                </div>
               </div>
 
               {/* Progress Bar */}
