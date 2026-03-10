@@ -80,6 +80,7 @@ interface Note {
   icon?: string;
   excerpt?: string;
   source?: string;
+  language?: string;
 }
 
 // Relative time helper
