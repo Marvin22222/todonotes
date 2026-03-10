@@ -4,7 +4,7 @@
  * Mobile First, PWA, Light/Dark Mode
  */
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, CheckSquare, FileText, Settings, 
@@ -460,6 +460,66 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
   const [title, setTitle] = useState(note?.title || '');
   const [content, setContent] = useState(note?.content || '');
   const [tags, setTags] = useState(note?.tags.join(', ') || '');
+  const [showSlashMenu, setShowSlashMenu] = useState(false);
+  const [slashMenuPosition, setSlashMenuPosition] = useState({ top: 0, left: 0 });
+  const [selectedSlashIndex, setSelectedSlashIndex] = useState(0);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  const slashCommands = [
+    { icon: '📝', label: 'Text', description: 'Plain text', insert: '' },
+    { icon: '📋', label: 'List', description: 'Bullet list', insert: '\n- ' },
+    { icon: '☑️', label: 'Checklist', description: 'Todo list', insert: '\n- [ ] ' },
+    { icon: '🔖', label: 'Heading 1', description: 'Large heading', insert: '\n# ' },
+    { icon: '🔖', label: 'Heading 2', description: 'Medium heading', insert: '\n## ' },
+    { icon: '🔖', label: 'Heading 3', description: 'Small heading', insert: '\n### ' },
+    { icon: '💬', label: 'Quote', description: 'Quote block', insert: '\n> ' },
+    { icon: '```', label: 'Code', description: 'Code block', insert: '\n```\n\n```' },
+  ];
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setContent(value);
+    
+    // Check for slash command
+    const cursorPos = e.target.selectionStart;
+    const textBeforeCursor = value.slice(0, cursorPos);
+    const lastSlashIndex = textBeforeCursor.lastIndexOf('\n');
+    const currentLine = textBeforeCursor.slice(lastSlashIndex);
+    
+    if (currentLine.startsWith('/')) {
+      setShowSlashMenu(true);
+      setSelectedSlashIndex(0);
+    } else if (showSlashMenu && !currentLine.startsWith('/')) {
+      setShowSlashMenu(false);
+    }
+  };
+
+  const insertSlashCommand = (insert: string) => {
+    const cursorPos = textareaRef.current?.selectionStart || 0;
+    const textBeforeCursor = content.slice(0, cursorPos);
+    const lastNewline = textBeforeCursor.lastIndexOf('\n');
+    const newContent = textBeforeCursor.slice(0, lastNewline) + insert + content.slice(cursorPos);
+    setContent(newContent);
+    setShowSlashMenu(false);
+    textareaRef.current?.focus();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (showSlashMenu) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedSlashIndex(i => (i + 1) % slashCommands.length);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedSlashIndex(i => (i - 1 + slashCommands.length) % slashCommands.length);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        insertSlashCommand(slashCommands[selectedSlashIndex].insert);
+      } else if (e.key === 'Escape') {
+        setShowSlashMenu(false);
+      }
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -486,11 +546,45 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
         />
 
         <textarea
+          ref={textareaRef}
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={handleContentChange}
+          onKeyDown={handleKeyDown}
           placeholder="Schreibe deine Note... (Markdown support)"
           className="input min-h-[300px] resize-none font-mono text-sm"
         />
+
+        {/* Slash Command Menu */}
+        {showSlashMenu && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="absolute z-50 w-64 bg-surface border border-border rounded-xl shadow-lg overflow-hidden"
+            style={{ bottom: '50%', left: '50%', transform: 'translateX(-50%)' }}
+          >
+            <div className="p-2 border-b border-border">
+              <p className="text-xs text-muted-foreground">Commands</p>
+            </div>
+            <div className="max-h-48 overflow-y-auto">
+              {slashCommands.map((cmd, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => insertSlashCommand(cmd.insert)}
+                  className={`w-full px-3 py-2 flex items-center gap-3 text-left transition-colors ${
+                    i === selectedSlashIndex ? 'bg-primary/10' : 'hover:bg-secondary/50'
+                  }`}
+                >
+                  <span className="text-lg">{cmd.icon}</span>
+                  <div>
+                    <p className="text-sm font-medium">{cmd.label}</p>
+                    <p className="text-xs text-muted-foreground">{cmd.description}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         <input
           type="text"
