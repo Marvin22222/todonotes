@@ -46,6 +46,7 @@ interface Note {
   starred?: boolean;
   links?: string[];
   url?: string;
+  collaborators?: string[];
 }
 
 // Relative time helper
