@@ -84,6 +84,7 @@ interface Note {
   timezone?: string;
   reminderDate?: string;
   recurrenceEnd?: string;
+  completedAt?: string;
 }
 
 // Relative time helper
