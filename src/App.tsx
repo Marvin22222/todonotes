@@ -1412,6 +1412,13 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
           className="text-xs text-muted-foreground hover:text-foreground"
         >
           📋 Copy
+                    <button
+                      type="button"
+                      onClick={() => window.print()}
+                      className="text-xs text-muted-foreground hover:text-foreground"
+                    >
+                      🖨️ Print
+                    </button>
         </button>
         <button
           type="button"
