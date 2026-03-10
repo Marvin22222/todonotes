@@ -132,14 +132,32 @@ export default function App() {
 
   // Delete functions
   const deleteTodo = (id: string) => {
+    const deletedTodo = todos.find(t => t.id === id);
     setTodos(todos.filter(t => t.id !== id));
-    toast.success('Task gelöscht');
+    toast.success('Task gelöscht', {
+      action: {
+        label: 'Undo',
+        onClick: () => {
+          if (deletedTodo) setTodos([deletedTodo, ...todos]);
+        }
+      },
+      duration: 4000
+    });
     setView('home');
   };
 
   const deleteNote = (id: string) => {
+    const deletedNote = notes.find(n => n.id === id);
     setNotes(notes.filter(n => n.id !== id));
-    toast.success('Note gelöscht');
+    toast.success('Note gelöscht', {
+      action: {
+        label: 'Undo',
+        onClick: () => {
+          if (deletedNote) setNotes([deletedNote, ...notes]);
+        }
+      },
+      duration: 4000
+    });
     setView('home');
   };
 
@@ -414,14 +432,14 @@ export default function App() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className={`font-medium truncate ${(item as Todo).completed ? 'line-through text-muted-foreground' : ''}`}>{item.title}</p>
-                          <p className="text-xs text-muted-foreground">Task • {getRelativeTime(item.createdAt)('de')}</p>
+                          <p className="text-xs text-muted-foreground">Task • {getRelativeTime(item.createdAt)}</p>
                         </div>
                       </div>
                     ) : (
                       <div key={item.id} onClick={() => { setSelectedItem(item as Note); setView('edit-note'); }} className="card p-4 cursor-pointer hover:border-primary/30">
                         <p className="font-medium truncate">{item.title || 'Untitled'}</p>
                         <p className="text-xs text-muted-foreground line-clamp-1">{item.content}</p>
-                        <p className="text-xs text-muted-foreground mt-1">Note • {getRelativeTime(item.createdAt)('de')}</p>
+                        <p className="text-xs text-muted-foreground mt-1">Note • {getRelativeTime(item.createdAt)}</p>
                       </div>
                     ))
                   )}
@@ -472,7 +490,15 @@ export default function App() {
                       </div>
                     </motion.div>
                   ))}
-                  {todos.length === 0 && <p className="text-center text-muted-foreground py-8">Keine Tasks</p>}
+                  {todos.length === 0 && (
+                    <div className="text-center py-12">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-secondary/50 flex items-center justify-center">
+                        <CheckSquare className="w-8 h-8 text-muted-foreground" />
+                      </div>
+                      <p className="text-muted-foreground font-medium">No tasks yet</p>
+                      <p className="text-xs text-muted-foreground mt-1">Tap + to create your first task</p>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -482,10 +508,18 @@ export default function App() {
                     <div key={note.id} onClick={() => { setSelectedItem(note); setView('edit-note'); }} className="card p-4 cursor-pointer hover:border-primary/30">
                       <p className="font-medium truncate">{note.title || 'Untitled'}</p>
                       <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{note.content}</p>
-                      <p className="text-xs text-muted-foreground mt-2">{getRelativeTime(note.updatedAt)('de')}</p>
+                      <p className="text-xs text-muted-foreground mt-2">{getRelativeTime(note.updatedAt)}</p>
                     </div>
                   ))}
-                  {notes.length === 0 && <p className="text-center text-muted-foreground py-8">Keine Notes</p>}
+                  {notes.length === 0 && (
+                    <div className="text-center py-12">
+                      <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-secondary/50 flex items-center justify-center">
+                        <FileText className="w-8 h-8 text-muted-foreground" />
+                      </div>
+                      <p className="text-muted-foreground font-medium">No notes yet</p>
+                      <p className="text-xs text-muted-foreground mt-1">Tap + to capture your first note</p>
+                    </div>
+                  )}
                 </div>
               )}
             </motion.div>
