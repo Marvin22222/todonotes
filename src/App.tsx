@@ -79,6 +79,7 @@ export default function App() {
   const [view, setView] = useState<'home' | 'new-todo' | 'new-note' | 'edit-todo' | 'edit-note'>('home');
   const [tab, setTab] = useState<'recent' | 'tasks' | 'notes'>('recent');
   const [showCompleted, setShowCompleted] = useState(true);
+  const [sortBy, setSortBy] = useState<'date' | 'priority' | 'title'>('date');
   const [todos, setTodos] = useState<Todo[]>(() => JSON.parse(localStorage.getItem(TODOS_KEY) || '[]'));
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
   const [selectedItem, setSelectedItem] = useState<Todo | Note | null>(null);
@@ -461,16 +462,41 @@ export default function App() {
                     <span className="text-sm text-muted-foreground">
                       {todos.filter(t => !t.completed).length} remaining
                     </span>
-                    <button
-                      onClick={() => setShowCompleted(!showCompleted)}
-                      className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
-                    >
-                      {showCompleted ? '👁️ Hide completed' : '👁️ Show completed'}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {/* Sort buttons */}
+                      <div className="flex bg-secondary/50 rounded-lg p-0.5">
+                        {(['date', 'priority', 'title'] as const).map((s) => (
+                          <button
+                            key={s}
+                            onClick={() => setSortBy(s)}
+                            className={`px-2 py-1 text-xs rounded-md transition-colors ${
+                              sortBy === s ? 'bg-surface shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                            }`}
+                          >
+                            {s === 'date' ? '📅' : s === 'priority' ? '🔺' : '📝'}
+                          </button>
+                        ))}
+                      </div>
+                      <button
+                        onClick={() => setShowCompleted(!showCompleted)}
+                        className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+                      >
+                        {showCompleted ? '👁️' : '👁️‍🗨️'}
+                      </button>
+                    </div>
                   </div>
                   <div className="space-y-2">
                   {todos
                     .filter(todo => showCompleted || !todo.completed)
+                    .sort((a, b) => {
+                      if (sortBy === 'priority') {
+                        const priorityOrder = { high: 0, medium: 1, low: 2 };
+                        return priorityOrder[a.priority] - priorityOrder[b.priority];
+                      } else if (sortBy === 'title') {
+                        return a.title.localeCompare(b.title);
+                      }
+                      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                    })
                     .map((todo) => (
                     <motion.div
                       key={todo.id}
@@ -521,7 +547,30 @@ export default function App() {
 
               {tab === 'notes' && (
                 <div className="space-y-2">
-                  {notes.map((note) => (
+                  {/* Sort for notes */}
+                  <div className="flex justify-end mb-2">
+                    <div className="flex bg-secondary/50 rounded-lg p-0.5">
+                      {(['date', 'title'] as const).map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => setSortBy(s)}
+                          className={`px-2 py-1 text-xs rounded-md transition-colors ${
+                            sortBy === s ? 'bg-surface shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                          }`}
+                        >
+                          {s === 'date' ? '📅' : '📝'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {notes
+                    .sort((a, b) => {
+                      if (sortBy === 'title') {
+                        return (a.title || '').localeCompare(b.title || '');
+                      }
+                      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+                    })
+                    .map((note) => (
                     <div key={note.id} onClick={() => { setSelectedItem(note); setView('edit-note'); }} className="card p-4 cursor-pointer hover:border-primary/30">
                       <p className="font-medium truncate">{note.title || 'Untitled'}</p>
                       <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{note.content}</p>
