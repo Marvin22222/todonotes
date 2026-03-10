@@ -43,6 +43,7 @@ interface Note {
   tags: string[];
   notebook?: string;
   notebookColor?: string;
+  dueTime?: string;
   createdAt: string;
   updatedAt: string;
   pinned?: boolean;
