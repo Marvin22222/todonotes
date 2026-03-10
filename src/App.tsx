@@ -639,7 +639,8 @@ export default function App() {
                           deleteTodo(todo.id);
                         }
                       }}
-                      className="card p-4 flex items-center gap-3 cursor-pointer hover:border-primary/30"
+                      className={`card p-4 flex items-center gap-3 cursor-pointer hover:border-primary/30 ${todo.color ? 'border-l-4' : ''}`}
+                      style={{ borderLeftColor: todo.color || undefined }}
                     >
                       <button 
                         onClick={(e) => { e.stopPropagation(); setTodos(todos.map(t => t.id === todo.id ? { ...t, completed: !t.completed } : t)); }}
