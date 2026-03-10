@@ -26,6 +26,7 @@ interface Todo {
   locationName?: string;
   attendees?: string[];
   alerts?: string[];
+  recurrences?: string[];
   cost?: number;
   location?: string;
   tags: string[];
@@ -102,6 +103,7 @@ interface Note {
   locationName?: string;
   attendees?: string[];
   alerts?: string[];
+  recurrences?: string[];
 }
 
 // Relative time helper
