@@ -457,6 +457,11 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
+              {/* Daily Quote */}
+              <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-2xl border border-primary/10">
+                <p className="text-sm italic text-foreground/80">"{['Every day is a fresh start', 'Stay focused and never give up', 'Small steps lead to big changes', 'Your potential is limitless'][Math.floor(Math.random() * 4)]}"</p>
+              </div>
+
               {/* Quick Actions - Craft Style */}
               <div className="grid grid-cols-2 gap-3 mb-6">
                 <motion.button
