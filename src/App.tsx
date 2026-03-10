@@ -308,6 +308,10 @@ export default function App() {
         e.preventDefault();
         setIsDark(!isDark);
       }
+      // Cmd+1/2/3 = Switch tabs
+      if ((e.metaKey || e.ctrlKey) && e.key === '1') { e.preventDefault(); setTab('recent'); }
+      if ((e.metaKey || e.ctrlKey) && e.key === '2') { e.preventDefault(); setTab('tasks'); }
+      if ((e.metaKey || e.ctrlKey) && e.key === '3') { e.preventDefault(); setTab('notes'); }
       // Cmd+Shift+N = Quick Note
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'N') {
         e.preventDefault();
