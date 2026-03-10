@@ -45,6 +45,7 @@ interface Note {
   notebookColor?: string;
   dueTime?: string;
   category?: string;
+  effort?: low | medium | high;
   createdAt: string;
   updatedAt: string;
   pinned?: boolean;
