@@ -75,6 +75,7 @@ interface Note {
   section?: string;
   bucket?: string;
   sprint?: string;
+  theme?: string;
 }
 
 // Relative time helper
