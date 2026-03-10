@@ -617,6 +617,7 @@ export default function App() {
                   <div className="space-y-2">
                   {todos
                     .filter(todo => showCompleted || !todo.completed)
+                    .filter(todo => !todo.archived)
                     .filter(todo => !filterTag || todo.tags.includes(filterTag))
                     .sort((a, b) => {
                       // Pinned always first
