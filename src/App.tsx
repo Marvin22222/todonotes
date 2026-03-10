@@ -54,6 +54,20 @@ const getRelativeTime = (dateString: string) => {
   return date.toLocaleDateString('de');
 };
 
+// Simple markdown preview
+const renderMarkdown = (text: string) => {
+  if (!text) return '';
+  return text
+    .replace(/^# (.+)$/gm, '<h1 class="text-xl font-bold mt-2">$1</h1>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-lg font-semibold mt-2">$1</h2>')
+    .replace(/^### (.+)$/gm, '<h3 class="text-base font-medium mt-1">$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code class="bg-secondary px-1 rounded">$1</code>')
+    .replace(/^- (.+)$/gm, '<li class="ml-2">$1</li>')
+    .replace(/\n/g, '<br/>');
+};
+
 // Storage Keys
 const TODOS_KEY = 'todonotes_todos';
 const NOTES_KEY = 'todonotes_notes';
@@ -373,7 +387,7 @@ export default function App() {
                         <FileText className="w-5 h-5 text-primary" />
                         <div>
                           <p className="font-medium">{note.title || 'Untitled'}</p>
-                          <p className="text-xs text-muted-foreground line-clamp-1">{note.content.slice(0, 50)}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-1">{renderMarkdown(note.content.slice(0, 80))}</p>
                         </div>
                       </motion.div>
                     ))}
