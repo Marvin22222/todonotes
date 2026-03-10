@@ -1136,6 +1136,8 @@ function TodoEditor({ todo, onSave, onDelete }: { todo: Todo | null; onSave: (to
 // Note Editor Component
 function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (note: Note) => void; onDelete?: () => void }) {
   const [title, setTitle] = useState(note?.title || '');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const commonEmojis = ['📝', '💡', '🎯', '🔥', '⭐', '💰', '📚', '🏃', '🎉', '❤️'];
   const [content, setContent] = useState(note?.content || '');
   const [tags, setTags] = useState(note?.tags.join(', ') || '');
   const [showSlashMenu, setShowSlashMenu] = useState(false);
@@ -1319,6 +1321,11 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
           className="input text-xl font-semibold"
           autoFocus
         />
+        <div className="flex gap-1 mb-2">
+          {commonEmojis.map(e => (
+            <button key={e} onClick={() => setTitle(title + ' ' + e)} className="hover:bg-secondary p-1 rounded">{e}</button>
+          ))}
+        </div>
 
         <textarea
           ref={textareaRef}
