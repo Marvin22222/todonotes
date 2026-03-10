@@ -83,6 +83,7 @@ interface Note {
   language?: string;
   timezone?: string;
   reminderDate?: string;
+  recurrenceEnd?: string;
 }
 
 // Relative time helper
