@@ -98,7 +98,7 @@ function useTheme() {
 export default function App() {
   const { isDark, setIsDark } = useTheme();
   const [view, setView] = useState<'home' | 'new-todo' | 'new-note' | 'edit-todo' | 'edit-note'>('home');
-  const [tab, setTab] = useState<'recent' | 'tasks' | 'notes' | 'today'>('recent');
+  const [tab, setTab] = useState<'recent' | 'tasks' | 'notes' | 'today' | 'weekly'>('recent');
   const [showTodayOnly, setShowTodayOnly] = useState(false);
   const [showCompleted, setShowCompleted] = useState(true);
   const [filterTag, setFilterTag] = useState<string | null>(null);
@@ -581,7 +581,7 @@ export default function App() {
               {/* Tab Switcher - Premium Style */}
               {!focusMode && (
               <div className="flex gap-1 mb-4 p-1 bg-secondary/50 rounded-2xl">
-                {(['recent', 'tasks', 'notes', 'today'] as const).map((t) => (
+                {(['recent', 'tasks', 'notes', 'today', 'weekly'] as const).map((t) => (
                   <motion.button
                     key={t}
                     onClick={() => setTab(t)}
@@ -870,6 +870,29 @@ export default function App() {
                         </div>
                       </div>
                     ))
+                  )}
+                </div>
+              )}
+
+              {tab === 'weekly' && (
+                <div className="space-y-4">
+                  <h2 className="text-lg font-semibold">📅 This Week</h2>
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, i) => {
+                    const dayDate = new Date();
+                    dayDate.setDate(dayDate.getDate() - dayDate.getDay() + i);
+                    const dayStr = dayDate.toISOString().split('T')[0];
+                    const dayTodos = todos.filter(t => t.dueDate === dayStr);
+                    return dayTodos.length > 0 ? (
+                      <div key={day} className="card p-3">
+                        <p className="font-medium text-sm mb-2">{day} {dayDate.getDate()}</p>
+                        {dayTodos.map(t => (
+                          <div key={t.id} className="text-sm py-1">{t.title}</div>
+                        ))}
+                      </div>
+                    ) : null;
+                  })}
+                  {todos.filter(t => t.dueDate).length === 0 && (
+                    <p className="text-center text-muted-foreground py-8">No tasks with due dates</p>
                   )}
                 </div>
               )}
