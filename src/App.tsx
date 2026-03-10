@@ -90,6 +90,7 @@ const THEME_KEY = 'todonotes_theme';
 function useTheme() {
   const [isDark, setIsDark] = useState(() => {
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [accentColor, setAccentColor] = useState("blue");
     const saved = localStorage.getItem(THEME_KEY);
     if (saved === 'auto') return window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (saved) return saved === 'dark';
