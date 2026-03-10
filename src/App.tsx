@@ -218,6 +218,12 @@ export default function App() {
     setView('home');
   };
 
+  const deleteAllCompleted = () => {
+    const completed = todos.filter(t => t.completed);
+    setTodos(todos.filter(t => !t.completed));
+    toast.success(`${completed.length} completed tasks deleted`);
+  };
+
   // Duplicate functions
   const duplicateTodo = (id: string) => {
     const todo = todos.find(t => t.id === id);
