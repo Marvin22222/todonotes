@@ -173,20 +173,21 @@ export default function App() {
                 </motion.button>
               </div>
 
-              {/* Tab Switcher */}
-              <div className="flex gap-2 mb-4 p-1 bg-background rounded-xl">
+              {/* Tab Switcher - Premium Style */}
+              <div className="flex gap-1 mb-4 p-1 bg-secondary/50 rounded-2xl">
                 {(['recent', 'tasks', 'notes'] as const).map((t) => (
-                  <button
+                  <motion.button
                     key={t}
                     onClick={() => setTab(t)}
-                    className={`flex-1 py-2 rounded-lg font-medium transition-all ${
+                    className={`flex-1 py-2.5 px-4 rounded-xl font-medium text-sm transition-all ${
                       tab === t 
-                        ? 'bg-surface shadow-sm text-primary' 
+                        ? 'bg-surface shadow-sm text-foreground' 
                         : 'text-muted-foreground hover:text-foreground'
                     }`}
+                    whileTap={{ scale: 0.97 }}
                   >
                     {t === 'recent' ? 'Recent' : t === 'tasks' ? 'Tasks' : 'Notes'}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
 
@@ -302,13 +303,24 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* FAB */}
+      {/* FAB - Quick Capture */}
       {view === 'home' && (
         <motion.button
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center active:scale-95 transition-transform"
-          onClick={() => setTab(tab === 'tasks' ? (setSelectedItem(null), setView('new-note')) : (setSelectedItem(null), setView('new-todo')))}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-primary to-primary/80 text-white rounded-2xl shadow-lg shadow-primary/25 flex items-center justify-center"
+          onClick={() => {
+            // Toggle between task and note based on last tab
+            if (tab === 'tasks') {
+              setSelectedItem(null);
+              setView('new-note');
+            } else {
+              setSelectedItem(null);
+              setView('new-todo');
+            }
+          }}
         >
           <Plus className="w-6 h-6" />
         </motion.button>
