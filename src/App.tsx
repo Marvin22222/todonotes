@@ -974,6 +974,16 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
         ) : lastSaved ? (
           <span className="text-xs text-muted-foreground">✓ Saved</span>
         ) : <span />}
+        <button
+          type="button"
+          onClick={() => {
+            navigator.clipboard.writeText(`${title}\n\n${content}`);
+            toast.success('Copied to clipboard!');
+          }}
+          className="text-xs text-muted-foreground hover:text-foreground"
+        >
+          📋 Copy
+        </button>
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
