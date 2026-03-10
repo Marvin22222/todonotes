@@ -79,6 +79,7 @@ interface Note {
   coverImage?: string;
   icon?: string;
   excerpt?: string;
+  source?: string;
 }
 
 // Relative time helper
