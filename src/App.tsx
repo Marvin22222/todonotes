@@ -149,6 +149,25 @@ export default function App() {
     setView('home');
   };
 
+  // Duplicate functions
+  const duplicateTodo = (id: string) => {
+    const todo = todos.find(t => t.id === id);
+    if (todo) {
+      const newTodo = { ...todo, id: Date.now().toString(), title: `${todo.title} (copy)`, createdAt: new Date().toISOString() };
+      setTodos([newTodo, ...todos]);
+      toast.success('Task duplicated');
+    }
+  };
+
+  const duplicateNote = (id: string) => {
+    const note = notes.find(n => n.id === id);
+    if (note) {
+      const newNote = { ...note, id: Date.now().toString(), title: note.title ? `${note.title} (copy)` : 'Copy', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+      setNotes([newNote, ...notes]);
+      toast.success('Note duplicated');
+    }
+  };
+
   const deleteNote = (id: string) => {
     const deletedNote = notes.find(n => n.id === id);
     setNotes(notes.filter(n => n.id !== id));
@@ -603,12 +622,25 @@ export default function App() {
                       return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
                     })
                     .map((note) => (
-                    <div key={note.id} onClick={() => { setSelectedItem(note); setView('edit-note'); }} className="card p-4 cursor-pointer hover:border-primary/30">
-                      <p className="font-medium truncate">{note.title || 'Untitled'}</p>
-                      <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{note.content}</p>
-                      <p className="text-xs text-muted-foreground mt-2">{getRelativeTime(note.updatedAt)}</p>
-                    </div>
-                  ))}
+                      <motion.div
+                        key={note.id}
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 100 }}
+                        onDragEnd={(e, { offset }) => {
+                          if (offset.x > 100) {
+                            duplicateNote(note.id);
+                          } else if (offset.x < -100) {
+                            deleteNote(note.id);
+                          }
+                        }}
+                        className="card p-4 cursor-pointer hover:border-primary/30"
+                        onClick={() => { setSelectedItem(note); setView('edit-note'); }}
+                      >
+                        <p className="font-medium truncate">{note.title || 'Untitled'}</p>
+                        <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{note.content}</p>
+                        <p className="text-xs text-muted-foreground mt-2">{getRelativeTime(note.updatedAt)}</p>
+                      </motion.div>
+                    ))}
                   {notes.length === 0 && (
                     <div className="text-center py-12">
                       <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-secondary/50 flex items-center justify-center">
