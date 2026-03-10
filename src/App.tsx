@@ -82,6 +82,7 @@ interface Note {
   source?: string;
   language?: string;
   timezone?: string;
+  reminderDate?: string;
 }
 
 // Relative time helper
