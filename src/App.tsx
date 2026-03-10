@@ -78,6 +78,7 @@ export default function App() {
   const { isDark, setIsDark } = useTheme();
   const [view, setView] = useState<'home' | 'new-todo' | 'new-note' | 'edit-todo' | 'edit-note'>('home');
   const [tab, setTab] = useState<'recent' | 'tasks' | 'notes'>('recent');
+  const [showCompleted, setShowCompleted] = useState(true);
   const [todos, setTodos] = useState<Todo[]>(() => JSON.parse(localStorage.getItem(TODOS_KEY) || '[]'));
   const [notes, setNotes] = useState<Note[]>(() => JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'));
   const [selectedItem, setSelectedItem] = useState<Todo | Note | null>(null);
@@ -454,8 +455,23 @@ export default function App() {
               )}
 
               {tab === 'tasks' && (
-                <div className="space-y-2">
-                  {todos.map((todo) => (
+                <div>
+                  {/* Show/hide completed toggle */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm text-muted-foreground">
+                      {todos.filter(t => !t.completed).length} remaining
+                    </span>
+                    <button
+                      onClick={() => setShowCompleted(!showCompleted)}
+                      className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
+                    >
+                      {showCompleted ? '👁️ Hide completed' : '👁️ Show completed'}
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                  {todos
+                    .filter(todo => showCompleted || !todo.completed)
+                    .map((todo) => (
                     <motion.div
                       key={todo.id}
                       drag="x"
@@ -490,7 +506,7 @@ export default function App() {
                       </div>
                     </motion.div>
                   ))}
-                  {todos.length === 0 && (
+                  {todos.filter(todo => showCompleted || !todo.completed).length === 0 && (
                     <div className="text-center py-12">
                       <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-secondary/50 flex items-center justify-center">
                         <CheckSquare className="w-8 h-8 text-muted-foreground" />
@@ -499,6 +515,7 @@ export default function App() {
                       <p className="text-xs text-muted-foreground mt-1">Tap + to create your first task</p>
                     </div>
                   )}
+                  </div>
                 </div>
               )}
 
