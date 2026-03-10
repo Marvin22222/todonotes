@@ -563,6 +563,22 @@ export default function App() {
                 </div>
               </div>
 
+              {/* Progress Bar */}
+              {todos.length > 0 && (
+                <div className="mb-4">
+                  <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                    <span>Progress</span>
+                    <span>{todos.filter(t => t.completed).length}/{todos.length}</span>
+                  </div>
+                  <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-primary to-green-500 transition-all duration-500"
+                      style={{ width: `${(todos.filter(t => t.completed).length / todos.length) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+
               {/* Timer */}
               <div className="mb-4 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-2xl border border-green-500/20">
                 {timerActive || timerSeconds > 0 ? (
