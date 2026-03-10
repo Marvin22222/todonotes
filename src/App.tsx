@@ -238,7 +238,21 @@ export default function App() {
               {tab === 'tasks' && (
                 <div className="space-y-2">
                   {todos.map((todo) => (
-                    <div key={todo.id} onClick={() => { setSelectedItem(todo); setView('edit-todo'); }} className="card p-4 flex items-center gap-3 cursor-pointer hover:border-primary/30">
+                    <motion.div
+                      key={todo.id}
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 100 }}
+                      onDragEnd={(e, { offset, velocity }) => {
+                        if (offset.x > 100) {
+                          // Swipe right - mark complete
+                          setTodos(todos.map(t => t.id === todo.id ? { ...t, completed: !t.completed } : t));
+                        } else if (offset.x < -100) {
+                          // Swipe left - delete
+                          deleteTodo(todo.id);
+                        }
+                      }}
+                      className="card p-4 flex items-center gap-3 cursor-pointer hover:border-primary/30"
+                    >
                       <button 
                         onClick={(e) => { e.stopPropagation(); setTodos(todos.map(t => t.id === todo.id ? { ...t, completed: !t.completed } : t)); }}
                         className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${todo.completed ? 'bg-primary border-primary' : 'border-muted-foreground'}`}
@@ -256,7 +270,7 @@ export default function App() {
                           {todo.dueDate && <span className="text-xs text-muted-foreground">📅 {todo.dueDate}</span>}
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                   {todos.length === 0 && <p className="text-center text-muted-foreground py-8">Keine Tasks</p>}
                 </div>
