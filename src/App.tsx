@@ -610,6 +610,36 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
   const [selectedSlashIndex, setSelectedSlashIndex] = useState(0);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
+  // Handle image paste
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      
+      for (const item of items) {
+        if (item.type.startsWith('image/')) {
+          e.preventDefault();
+          const file = item.getAsFile();
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const base64 = event.target?.result as string;
+              // Insert image markdown at cursor position
+              const imageMarkdown = `\n![image](${base64})\n`;
+              setContent(prev => prev + imageMarkdown);
+            };
+            reader.readAsDataURL(file);
+          }
+          break;
+        }
+      }
+    };
+    
+    const textarea = textareaRef.current;
+    textarea?.addEventListener('paste', handlePaste);
+    return () => textarea?.removeEventListener('paste', handlePaste);
+  }, []);
+
   const slashCommands = [
     { icon: '📝', label: 'Text', description: 'Plain text', insert: '' },
     { icon: '📋', label: 'List', description: 'Bullet list', insert: '\n- ' },
