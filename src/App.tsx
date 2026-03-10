@@ -71,6 +71,7 @@ interface Note {
   meetingLink?: string;
   address?: string;
   recordingUrl?: string;
+  checklist?: {id: string, text: string, done: boolean}[];
 }
 
 // Relative time helper
