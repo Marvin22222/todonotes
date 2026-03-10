@@ -670,7 +670,12 @@ export default function App() {
                             todo.priority === 'medium' ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' :
                             'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                           }`}>{todo.priority}</span>
-                          {todo.dueDate && <span className="text-xs text-muted-foreground">📅 {todo.dueDate}</span>}
+                          {todo.dueDate && (() => {
+                            const today = new Date().toISOString().split('T')[0];
+                            const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+                            const isDueSoon = todo.dueDate === today || todo.dueDate === tomorrow;
+                            return <span className={`text-xs ${isDueSoon ? 'text-orange-500 font-medium' : 'text-muted-foreground'}`}>📅 {todo.dueDate}</span>;
+                          })()}
                         </div>
                       </div>
                     </motion.div>
