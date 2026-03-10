@@ -74,6 +74,7 @@ interface Note {
   checklist?: {id: string, text: string, done: boolean}[];
   section?: string;
   bucket?: string;
+  sprint?: string;
 }
 
 // Relative time helper
