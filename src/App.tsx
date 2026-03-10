@@ -1113,7 +1113,27 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
   const [selectedSlashIndex, setSelectedSlashIndex] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [isListening, setIsListening] = useState(false);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  // Voice recognition
+  useEffect(() => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) return;
+    const SpeechRecognition = (window.SpeechRecognition || window.webkitSpeechRecognition);
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.onresult = (event) => {
+      let transcript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      setContent(prev => prev + ' ' + transcript);
+    };
+    if (isListening) recognition.start();
+    else recognition.stop();
+    return () => recognition.stop();
+  }, [isListening]);
 
   // Auto-save every 30 seconds
   useEffect(() => {
@@ -1248,6 +1268,13 @@ function NoteEditor({ note, onSave, onDelete }: { note: Note | null; onSave: (no
           className="text-xs text-muted-foreground hover:text-foreground"
         >
           📋 Copy
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsListening(!isListening)}
+          className={`text-xs ${isListening ? 'text-red-500' : 'text-muted-foreground'}`}
+        >
+          {isListening ? '🎙️ Stop' : '🎙️ Voice'}
         </button>
         <span className="text-xs text-muted-foreground">
           {content.split(/\s+/).filter(Boolean).length} words
