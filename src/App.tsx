@@ -48,6 +48,7 @@ interface Note {
   recurringRule?: string;
   context?: string;
   project?: string;
+  waitingFor?: string;
   effort?: low | medium | high;
   createdAt: string;
   updatedAt: string;
