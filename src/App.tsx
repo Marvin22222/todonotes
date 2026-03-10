@@ -77,6 +77,7 @@ interface Note {
   sprint?: string;
   theme?: string;
   coverImage?: string;
+  icon?: string;
 }
 
 // Relative time helper
