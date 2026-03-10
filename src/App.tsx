@@ -1,5 +1,5 @@
 /**
- * TodoNotes - Clean Todo & Notes App
+ * TodoNotes ✅ - Clean Todo & Notes App
  * =================================
  * Mobile First, PWA, Light/Dark Mode
  */
@@ -208,7 +208,7 @@ export default function App() {
       URL.revokeObjectURL(url);
       toast.success('Exported as CSV');
     } else {
-      let md = '# TodoNotes Export\n\n';
+      let md = '# TodoNotes ✅ Export\n\n';
       md += '## Tasks\n\n';
       todos.forEach(t => {
         md += `- [${t.completed ? 'x' : ' '}] ${t.title} (${t.priority})\n`;
@@ -396,7 +396,7 @@ export default function App() {
                 </button>
               )}
               <h1 className="text-lg font-semibold tracking-tight">
-                {view === 'home' ? 'TodoNotes' : view.includes('todo') ? 'Task' : 'Note'}
+                {view === 'home' ? 'TodoNotes ✅' : view.includes('todo') ? 'Task' : 'Note'}
               </h1>
             </div>
             
