@@ -51,6 +51,7 @@ interface Todo {
   difficulty?: number;
   impact?: number;
   energy?: number;
+  urgency?: number;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -73,6 +74,7 @@ interface Todo {
   difficulty?: number;
   impact?: number;
   energy?: number;
+  urgency?: number;
   cost?: number;
   location?: string;
   tags: string[];
@@ -174,6 +176,7 @@ interface Note {
   difficulty?: number;
   impact?: number;
   energy?: number;
+  urgency?: number;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -196,6 +199,7 @@ interface Note {
   difficulty?: number;
   impact?: number;
   energy?: number;
+  urgency?: number;
 }
 
 // Relative time helper
