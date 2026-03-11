@@ -33,10 +33,12 @@ interface Todo {
   mentions?: string[];
   timeEstimate?: number;
   repeatUntil?: string;
+  snoozeUntil?: string;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
   repeatUntil?: string;
+  snoozeUntil?: string;
   cost?: number;
   location?: string;
   tags: string[];
@@ -120,10 +122,12 @@ interface Note {
   mentions?: string[];
   timeEstimate?: number;
   repeatUntil?: string;
+  snoozeUntil?: string;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
   repeatUntil?: string;
+  snoozeUntil?: string;
 }
 
 // Relative time helper
