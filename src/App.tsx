@@ -32,6 +32,7 @@ interface Todo {
   reactions?: {emoji: string, count: number}[];
   mentions?: string[];
   hashtags?: string[];
+  mentions?: string[];
   cost?: number;
   location?: string;
   tags: string[];
@@ -114,6 +115,7 @@ interface Note {
   reactions?: {emoji: string, count: number}[];
   mentions?: string[];
   hashtags?: string[];
+  mentions?: string[];
 }
 
 // Relative time helper
