@@ -19,12 +19,6 @@ workflows:
         script: |
           cd ios/App
           pod install
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          app-store-connect fetch-signing-files "com.todonotes.app" --type IOS_APP_STORE
-          keychain add-certificates
-          xcode-project use-profiles
       - name: Build iOS
         script: |
           xcode-project build-ipa --workspace ios/App/App.xcworkspace --scheme App
@@ -35,5 +29,3 @@ workflows:
       email:
         recipients:
           - marvin@example.com
-      slack:
-        notify_on_build_start: true
