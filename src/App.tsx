@@ -46,6 +46,7 @@ interface Todo {
   charCount?: number;
   readingTime?: number;
   progress?: number;
+  quality?: number;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -63,6 +64,7 @@ interface Todo {
   charCount?: number;
   readingTime?: number;
   progress?: number;
+  quality?: number;
   cost?: number;
   location?: string;
   tags: string[];
@@ -159,6 +161,7 @@ interface Note {
   charCount?: number;
   readingTime?: number;
   progress?: number;
+  quality?: number;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -176,6 +179,7 @@ interface Note {
   charCount?: number;
   readingTime?: number;
   progress?: number;
+  quality?: number;
 }
 
 // Relative time helper
