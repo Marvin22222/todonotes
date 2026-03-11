@@ -37,6 +37,7 @@ interface Todo {
   sendNotification?: boolean;
   notifyBefore?: number;
   notifyAfter?: number;
+  blockedBy?: string[];
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -45,6 +46,7 @@ interface Todo {
   sendNotification?: boolean;
   notifyBefore?: number;
   notifyAfter?: number;
+  blockedBy?: string[];
   cost?: number;
   location?: string;
   tags: string[];
@@ -132,6 +134,7 @@ interface Note {
   sendNotification?: boolean;
   notifyBefore?: number;
   notifyAfter?: number;
+  blockedBy?: string[];
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -140,6 +143,7 @@ interface Note {
   sendNotification?: boolean;
   notifyBefore?: number;
   notifyAfter?: number;
+  blockedBy?: string[];
 }
 
 // Relative time helper
