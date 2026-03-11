@@ -31,8 +31,10 @@ interface Todo {
   attachments?: {id: string, name: string, url: string, type: string}[];
   reactions?: {emoji: string, count: number}[];
   mentions?: string[];
+  timeEstimate?: number;
   hashtags?: string[];
   mentions?: string[];
+  timeEstimate?: number;
   cost?: number;
   location?: string;
   tags: string[];
@@ -114,8 +116,10 @@ interface Note {
   attachments?: {id: string, name: string, url: string, type: string}[];
   reactions?: {emoji: string, count: number}[];
   mentions?: string[];
+  timeEstimate?: number;
   hashtags?: string[];
   mentions?: string[];
+  timeEstimate?: number;
 }
 
 // Relative time helper
