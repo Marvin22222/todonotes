@@ -25,7 +25,3 @@ workflows:
     artifacts:
       - build/ios/ipa/*.ipa
       - ios/App/App.xcarchive
-    publishing:
-      email:
-        recipients:
-          - marvin@example.com
