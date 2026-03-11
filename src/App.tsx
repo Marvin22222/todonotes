@@ -387,6 +387,39 @@ export default function App() {
     setShowExportMenu(false);
   };
 
+  // Import data from JSON file
+  const importData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const imported = JSON.parse(e.target?.result as string);
+        
+        if (imported.todos && Array.isArray(imported.todos)) {
+          const existingTodos = JSON.parse(localStorage.getItem(TODOS_KEY) || '[]');
+          const mergedTodos = [...existingTodos, ...imported.todos];
+          setTodos(mergedTodos);
+          localStorage.setItem(TODOS_KEY, JSON.stringify(mergedTodos));
+        }
+        
+        if (imported.notes && Array.isArray(imported.notes)) {
+          const existingNotes = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]');
+          const mergedNotes = [...existingNotes, ...imported.notes];
+          setNotes(mergedNotes);
+          localStorage.setItem(NOTES_KEY, JSON.stringify(mergedNotes));
+        }
+        
+        toast.success(`Imported ${imported.todos?.length || 0} tasks and ${imported.notes?.length || 0} notes`);
+      } catch (error) {
+        toast.error('Invalid file format');
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  };
+
   // Save to localStorage
   useEffect(() => {
     localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
@@ -592,6 +625,18 @@ export default function App() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                   </svg>
                 </button>
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={importData}
+                  className="hidden"
+                  id="import-file"
+                />
+                <label htmlFor="import-file" className="btn-icon cursor-pointer" title="Import">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                </label>
                 {showExportMenu && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
