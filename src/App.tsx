@@ -43,6 +43,7 @@ interface Todo {
   duplicates?: string[];
   seeAlso?: string[];
   wordCount?: number;
+  charCount?: number;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -57,6 +58,7 @@ interface Todo {
   duplicates?: string[];
   seeAlso?: string[];
   wordCount?: number;
+  charCount?: number;
   cost?: number;
   location?: string;
   tags: string[];
@@ -150,6 +152,7 @@ interface Note {
   duplicates?: string[];
   seeAlso?: string[];
   wordCount?: number;
+  charCount?: number;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -164,6 +167,7 @@ interface Note {
   duplicates?: string[];
   seeAlso?: string[];
   wordCount?: number;
+  charCount?: number;
 }
 
 // Relative time helper
