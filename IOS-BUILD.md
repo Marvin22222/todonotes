@@ -1,68 +1,71 @@
-# TodoNotes - Native iOS App
+# TodoNotes - iOS Build Anleitung
 
-## Build für iPhone (macOS erforderlich)
+## Option 1: Codemagic Cloud Build (Windows/Linux/Mac)
 
-### Voraussetzungen
-1. **macOS** mit Xcode installiert
-2. **Apple ID** (kein Developer Account nötig für AltStore)
-3. **AltStore** auf dem iPhone installiert (https://altstore.io)
+**Codemagic** baut iOS Apps in der Cloud - kein Mac nötig!
 
-### Schritte auf dem Mac
+### Schritte:
 
-#### 1. Projekt klonen
-```bash
-git clone https://github.com/Marvin22222/todonotes.git
-cd todonotes
-git checkout dev
-```
+#### 1. Codemagic Account erstellen
+1. Gehe auf **codemagic.io**
+2. Sign in with **GitHub**
+3. Authorize Codemagic für dein GitHub Konto
 
-#### 2. Dependencies installieren
-```bash
-npm install
-cd ios
-pod install
-cd ..
-```
+#### 2. Projekt hinzufügen
+1. In Codemagic: **Add application**
+2. Wähle **GitHub** → Repository: `Marvin22222/todonotes`
+3. Wähle **iOS** als Plattform
+4. Branch: `dev`
 
-#### 3. Xcode Projekt öffnen
-```bash
-open ios/App/App.xcworkspace
-```
+#### 3. Code Signing (Apple ID)
 
-#### 4. Build erstellen
-- In Xcode: **Product → Build** (⌘B)
-- Warten bis "Build Succeeded"
+**Option A - Kostenlos (Ad-Hoc für AltStore):**
+- In Codemagic: **Project Settings → Code signing**
+- Apple ID hinzufügen:
+  - Apple ID: deine Apple ID Email
+  - Password: dein Apple ID Password
+  - Besser: App-Specific Password erstellen (https://appleid.apple.com)
 
-#### 5. IPA exportieren
-- **Product → Archive**
-- Im Organizer: **Export → Ad Hoc / Development**
-- Apple ID auswählen und signieren
-- **.ipa Datei** wird erstellt
+**Option B - App Store Connect API:**
+1. Gehe zu https://appstoreconnect.apple.com
+2. Benutzer → App-Specific Passwords → Password erstellt
+3. In Codemagic: Add API key
 
-### Alternative: Schneller via CLI
+#### 4. Build starten
+1. Klick auf **Start new build**
+2. Wähle `dev` branch
+3. Warte auf Build (~10-15 min)
+4. **Download .ipa** aus den Artifacts
 
-```bash
-# Build via xcodebuild
-xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Debug -destination 'generic/platform=iOS' CODE_SIGN_IDENTITY="-" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO build
-
-# IPA erstellen mit xcrun
-xcrun altool --build-products build/Debug-iphoneos/App.app -f App.ipa
-```
-
-### Auf iPhone installieren (AltStore)
-
-1. **AltStore** auf dem iPhone installieren
-2. Mac und iPhone im **gleichen WLAN**
-3. AltServer auf dem Mac starten
-4. iPhone per USB anschließen
-5. In iTunes/Finder das iPhone auswählen
-6. Die **.ipa Datei** per Drag & Drop in AltServer ziehen
-7. App erscheint auf dem Home-Screen!
+#### 5. .ipa auf iPhone installieren (AltStore)
+1. AltStore auf iPhone installieren
+2. Mac/PC & iPhone im gleichen WLAN
+3. AltServer auf dem Gerät laufen lassen
+4. .ipa per Drag & Drop in AltServer ziehen
+5. Fertig! App auf Home-Screen
 
 ---
 
-## Alternativ: PWA (kein Mac nötig)
+## Option 2: Lokal mit Mac (falls verfügbar)
 
-Falls du keinen Mac hast, nutze die **PWA Version**:
-- URL: https://marvin22222.github.io/todonotes/
-- Safari → Teilen → Zum Home-Bildschirm
+Siehe oben - Xcode → Archive → Export
+
+---
+
+## Wichtig zu wissen:
+
+| | Kosten | Mac nötig? | AltStore? |
+|---|---|---|---|
+| **Codemagic** | Free Tier (500 min/Monat) | ❌ Nein | ✅ Ja |
+| **Lokal Xcode** | $0 | ✅ Ja | ✅ Ja |
+
+### Apple ID für Codemagic:
+- App-Specific Password erstellen: https://appleid.apple.com
+- Das statt normalem Password verwenden
+
+---
+
+## Falls Fragen:
+
+- **Codemagic Docs:** https://docs.codemagic.io/
+- **AltStore:** https://altstore.io/
