@@ -34,11 +34,13 @@ interface Todo {
   timeEstimate?: number;
   repeatUntil?: string;
   snoozeUntil?: string;
+  sendNotification?: boolean;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
   repeatUntil?: string;
   snoozeUntil?: string;
+  sendNotification?: boolean;
   cost?: number;
   location?: string;
   tags: string[];
@@ -123,11 +125,13 @@ interface Note {
   timeEstimate?: number;
   repeatUntil?: string;
   snoozeUntil?: string;
+  sendNotification?: boolean;
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
   repeatUntil?: string;
   snoozeUntil?: string;
+  sendNotification?: boolean;
 }
 
 // Relative time helper
