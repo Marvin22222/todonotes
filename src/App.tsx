@@ -29,6 +29,7 @@ interface Todo {
   recurrences?: string[];
   comments?: {id: string, text: string, author: string, createdAt: string}[];
   attachments?: {id: string, name: string, url: string, type: string}[];
+  reactions?: {emoji: string, count: number}[];
   cost?: number;
   location?: string;
   tags: string[];
@@ -108,6 +109,7 @@ interface Note {
   recurrences?: string[];
   comments?: {id: string, text: string, author: string, createdAt: string}[];
   attachments?: {id: string, name: string, url: string, type: string}[];
+  reactions?: {emoji: string, count: number}[];
 }
 
 // Relative time helper
