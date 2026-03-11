@@ -41,6 +41,7 @@ interface Todo {
   blocks?: string[];
   relatedTo?: string[];
   duplicates?: string[];
+  seeAlso?: string[];
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -53,6 +54,7 @@ interface Todo {
   blocks?: string[];
   relatedTo?: string[];
   duplicates?: string[];
+  seeAlso?: string[];
   cost?: number;
   location?: string;
   tags: string[];
@@ -144,6 +146,7 @@ interface Note {
   blocks?: string[];
   relatedTo?: string[];
   duplicates?: string[];
+  seeAlso?: string[];
   hashtags?: string[];
   mentions?: string[];
   timeEstimate?: number;
@@ -156,6 +159,7 @@ interface Note {
   blocks?: string[];
   relatedTo?: string[];
   duplicates?: string[];
+  seeAlso?: string[];
 }
 
 // Relative time helper
