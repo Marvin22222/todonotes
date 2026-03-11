@@ -30,6 +30,7 @@ interface Todo {
   comments?: {id: string, text: string, author: string, createdAt: string}[];
   attachments?: {id: string, name: string, url: string, type: string}[];
   reactions?: {emoji: string, count: number}[];
+  mentions?: string[];
   cost?: number;
   location?: string;
   tags: string[];
@@ -110,6 +111,7 @@ interface Note {
   comments?: {id: string, text: string, author: string, createdAt: string}[];
   attachments?: {id: string, name: string, url: string, type: string}[];
   reactions?: {emoji: string, count: number}[];
+  mentions?: string[];
 }
 
 // Relative time helper
