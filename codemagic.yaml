@@ -24,4 +24,3 @@ workflows:
           xcode-project build-ipa --workspace ios/App/App.xcworkspace --scheme App
     artifacts:
       - build/ios/ipa/*.ipa
-      - ios/App/App.xcarchive
