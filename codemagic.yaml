@@ -12,14 +12,14 @@ workflows:
       - name: Build web assets
         script: |
           npm run build
-      - name: Copy to iOS
+      - name: Sync to iOS
         script: |
-          npx cap copy ios
+          npx cap sync ios
       - name: Install CocoaPods
         script: |
-          cd ios && pod install
+          cd ios/App && pod install
       - name: Build iOS
         script: |
-          xcode-project build-ipa --workspace ios/App.xcworkspace --scheme App
+          xcode-project build-ipa --workspace ios/App/App.xcworkspace --scheme App
     artifacts:
       - build/ios/ipa/*.ipa
